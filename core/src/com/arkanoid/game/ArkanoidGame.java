@@ -2,6 +2,8 @@ package com.arkanoid.game;
 
 import com.arkanoid.game.gameobjects.Ball;
 import com.arkanoid.game.gameobjects.Paddle;
+import com.arkanoid.game.states.GameState;
+import com.arkanoid.game.states.Menu;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -25,38 +27,28 @@ public class ArkanoidGame extends Game {
     }
 
     public SpriteBatch batch;
-    public Texture img;
-    public Paddle paddle;
-	public Level level;
-	public Ball ball;
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		paddle = new Paddle();
-		level = new Level("level-2.txt");
-		ball = new Ball(new Vector2(100, 50));
+		GameState.setState(GameState.MENU);
 	}
 
 	@Override
 	public void render () {
-		paddle.update(Gdx.graphics.getDeltaTime());
-		ball.update(Gdx.graphics.getDeltaTime());
-		level.update(Gdx.graphics.getDeltaTime());
+		GameState.currentState.update(Gdx.graphics.getDeltaTime());
+
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-		level.render(batch);
-		paddle.render(batch);
-		ball.render(batch);
+
+		GameState.currentState.render(batch);
+
 		batch.end();
 	}
 	
 	@Override
 	public void dispose () {
 		batch.dispose();
-		paddle.dispose();
-		level.dispose();
-		ball.dispose();
 	}
 }

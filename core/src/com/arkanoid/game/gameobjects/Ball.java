@@ -1,6 +1,8 @@
 package com.arkanoid.game.gameobjects;
 
+import com.arkanoid.game.gameobjects.Block.BlockType;
 import com.arkanoid.game.ArkanoidGame;
+import com.arkanoid.game.states.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -24,6 +26,9 @@ public class Ball extends GameObject {
 
     @Override
     public void update(float dt) {
+        this.pos.x += this.vel.x * dt;
+        this.pos.y += this.vel.y * dt;
+
         Block hitBlock = null;
         Vector2 topLeft = new Vector2(pos.x, pos.y + size.y);
         Vector2 topRight = new Vector2(pos.x + size.x, pos.y + size.y);
@@ -31,7 +36,7 @@ public class Ball extends GameObject {
         Vector2 bottomRight = new Vector2(pos.x + size.x, pos.y);
         Vector2 center = new Vector2(pos.x + size.x / 2, pos.y + size.y / 2);
         Rectangle ballRect = new Rectangle(pos.x, pos.y, size.x, size.y);
-        for (Block go : ArkanoidGame.getInstance().level.blocks) {
+        for (Block go : Game.getInstance().level.blocks) {
             Rectangle blockRect = new Rectangle(go.pos.x, go.pos.y, go.size.x, go.size.y);
             if (blockRect.overlaps(ballRect)) {
                 hitBlock = go;
@@ -69,19 +74,19 @@ public class Ball extends GameObject {
                         pos.y = blockRect.y + blockRect.height + 1;
                     }
                 }
-                if (go.type == Block.UNBREAKABLE || go.type == Block.BLUE) {
+                if (go.type == BlockType.UNBREAKABLE || go.type == BlockType.DOUBLE) {
                     break;
                 }
             }
         }
-        if (hitBlock != null && hitBlock.type != Block.INVISIBLE && hitBlock.type != Block.UNBREAKABLE) {
-            ArkanoidGame.getInstance().level.hit(hitBlock);
+        if (hitBlock != null && hitBlock.type != BlockType.INVISIBLE && hitBlock.type != BlockType.UNBREAKABLE) {
+            Game.getInstance().level.hit(hitBlock);
         }
 
-        Paddle paddle = ArkanoidGame.getInstance().paddle;
+        Paddle paddle = Game.getInstance().paddle;
         Rectangle paddleRect = new Rectangle(paddle.pos.x, paddle.pos.y + paddle.size.y - 4, paddle.size.x, 4);
-        float MAX_VERTICAL_VEL = ArkanoidGame.getInstance().level.MAX_VERTICAL_VEL;
-        float MAX_HORIZONTAL_VEL = ArkanoidGame.getInstance().level.MAX_HORIZONTAL_VEL;
+        float MAX_VERTICAL_VEL = Game.getInstance().level.MAX_VERTICAL_VEL;
+        float MAX_HORIZONTAL_VEL = Game.getInstance().level.MAX_HORIZONTAL_VEL;
         if (paddleRect.overlaps(ballRect)) {
             float percentage = (pos.x - paddle.pos.x) / paddle.size.x;
             float yDir = vel.y < 0 ? 1 : -1;
@@ -101,8 +106,7 @@ public class Ball extends GameObject {
             pos.y = paddle.pos.y + paddle.size.y + 1;
         }
 
-        this.pos.x += this.vel.x * dt;
-        this.pos.y += this.vel.y * dt;
+
     }
 
     @Override

@@ -6,35 +6,48 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 public class Block extends GameObject {
+
+    public enum BlockType {
+        INVISIBLE("block-0.png", Integer.MAX_VALUE),
+        RED("block-R.png", 1),
+        BLUE("block-B.png", 1),
+        YELLOW("block-Y.png", 1),
+        GREEN("block-G.png", 1),
+        MAGENTA("block-M.png", 1),
+        PINK("block-P.png", 1),
+        CYAN("block-C.png", 1),
+        WHITE("block-W.png", 1),
+        SINGLE("block-D.png", 1),
+        DOUBLE("block-D.png", 2),
+        UNBREAKABLE("block-U.png", Integer.MAX_VALUE);
+
+        private Texture img;
+        public int lives;
+
+        BlockType(String filename, int lives) {
+            if (filename == "block-0.png") img = null;
+            else this.img = new Texture(filename);
+            this.lives = lives;
+        }
+    }
+
     public BlockType type;
-    public int lives;
 
     public static final float WIDTH = 16f;
     public static final float HEIGHT = 8f;
-    private static Texture RED_BLOCK_IMG;
-    private static Texture BLUE_BLOCK_IMG;
-    private static Texture UNBREAKABLE_BLOCK_IMG;
-
-    public static BlockType INVISIBLE;
-    public static BlockType RED;
-    public static BlockType BLUE;
-    public static BlockType UNBREAKABLE;
-
-
-    public static void loadImages() {
-        RED_BLOCK_IMG = new Texture("block-1.png");
-        BLUE_BLOCK_IMG = new Texture("block-2.png");
-        UNBREAKABLE_BLOCK_IMG = new Texture("block-3.png");
-        INVISIBLE = new BlockType(null);
-        RED = new BlockType(RED_BLOCK_IMG);
-        BLUE = new BlockType(BLUE_BLOCK_IMG);
-        UNBREAKABLE = new BlockType(UNBREAKABLE_BLOCK_IMG);
-    }
 
     public static void disposeImages() {
-        RED_BLOCK_IMG.dispose();
-        BLUE_BLOCK_IMG.dispose();
-        UNBREAKABLE_BLOCK_IMG.dispose();
+        BlockType.RED.img.dispose();
+        BlockType.BLUE.img.dispose();
+        BlockType.YELLOW.img.dispose();
+        BlockType.GREEN.img.dispose();
+        BlockType.MAGENTA.img.dispose();
+        BlockType.PINK.img.dispose();
+        BlockType.CYAN.img.dispose();
+        BlockType.WHITE.img.dispose();
+        BlockType.SINGLE.img.dispose();
+        BlockType.DOUBLE.img.dispose();
+        BlockType.UNBREAKABLE.img.dispose();
     }
 
     public Block(BlockType type, Vector2 pos) {
@@ -43,15 +56,12 @@ public class Block extends GameObject {
 
     public Block(BlockType type, Vector2 pos, Vector2 size) {
         this.type = type;
-        if (type == RED) lives = 1;
-        if (type == BLUE) lives = 2;
-        if (type == UNBREAKABLE) lives = Integer.MAX_VALUE;
         this.pos = pos;
         this.size = size;
     }
 
     public void reload() {
-        type = RED;
+        type = BlockType.SINGLE;
     }
 
     @Override

@@ -1,0 +1,20 @@
+field-3.png
+140
+110
+0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0
+G G G G G G G G G G G
+0 0 0 0 0 0 0 0 0 0 0
+W W W U U U U U U U U
+0 0 0 0 0 0 0 0 0 0 0
+R R R R R R R R R R R
+0 0 0 0 0 0 0 0 0 0 0
+U U U U U U U U W W W
+0 0 0 0 0 0 0 0 0 0 0
+P P P P P P P P P P P
+0 0 0 0 0 0 0 0 0 0 0
+B B B U U U U U U U U
+0 0 0 0 0 0 0 0 0 0 0
+B B B B B B B B B B B
+0 0 0 0 0 0 0 0 0 0 0
+R R R R R R R R R R R
