@@ -28,7 +28,7 @@ public class Button {
     }
 
     public void render(SpriteBatch sb) {
-        sb.draw(images[state], pos.x * ArkanoidGame.SCALE, pos.y * ArkanoidGame.SCALE, WIDTH * ArkanoidGame.SCALE, HEIGHT * ArkanoidGame.SCALE);
+        sb.draw(images[state], pos.x, pos.y, WIDTH, HEIGHT);
     }
 
     public void dispose() {

@@ -1,6 +1,6 @@
 field-1.png
-140
 130
+150
 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 0 0
 0 0 0 0 0 0 0 0 0 0 0
@@ -10,4 +10,3 @@ Y Y Y Y Y Y Y Y Y Y Y
 B B B B B B B B B B B
 M M M M M M M M M M M
 G G G G G G G G G G G
-D D D D D D D D D D D

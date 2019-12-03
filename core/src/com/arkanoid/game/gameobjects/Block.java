@@ -9,17 +9,17 @@ public class Block extends GameObject {
 
     public enum BlockType {
         INVISIBLE("block-0.png", Integer.MAX_VALUE),
-        RED("block-R.png", 1),
-        BLUE("block-B.png", 1),
-        YELLOW("block-Y.png", 1),
-        GREEN("block-G.png", 1),
-        MAGENTA("block-M.png", 1),
-        PINK("block-P.png", 1),
-        CYAN("block-C.png", 1),
-        WHITE("block-W.png", 1),
-        SINGLE("block-D.png", 1),
-        DOUBLE("block-D.png", 2),
-        UNBREAKABLE("block-U.png", Integer.MAX_VALUE);
+        RED("blocks/block-R.png", 1),
+        BLUE("blocks/block-B.png", 1),
+        YELLOW("blocks/block-Y.png", 1),
+        GREEN("blocks/block-G.png", 1),
+        MAGENTA("blocks/block-M.png", 1),
+        PINK("blocks/block-P.png", 1),
+        CYAN("blocks/block-C.png", 1),
+        WHITE("blocks/block-W.png", 1),
+        SINGLE("blocks/block-S.png", 1),
+        DOUBLE("blocks/block-D.png", 2),
+        UNBREAKABLE("blocks/block-U.png", Integer.MAX_VALUE);
 
         private Texture img;
         public int lives;
@@ -32,6 +32,7 @@ public class Block extends GameObject {
     }
 
     public BlockType type;
+    public int lives;
 
     public static final float WIDTH = 16f;
     public static final float HEIGHT = 8f;
@@ -56,6 +57,7 @@ public class Block extends GameObject {
 
     public Block(BlockType type, Vector2 pos, Vector2 size) {
         this.type = type;
+        this.lives = type.lives;
         this.pos = pos;
         this.size = size;
     }
@@ -72,7 +74,7 @@ public class Block extends GameObject {
     @Override
     public void render(SpriteBatch sb) {
         if (type.img != null) {
-            sb.draw(type.img, pos.x * ArkanoidGame.SCALE, pos.y * ArkanoidGame.SCALE, WIDTH * ArkanoidGame.SCALE, HEIGHT * ArkanoidGame.SCALE);
+            sb.draw(type.img, pos.x, pos.y, WIDTH, HEIGHT);
         }
     }
 

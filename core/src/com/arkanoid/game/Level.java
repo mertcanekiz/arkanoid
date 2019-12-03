@@ -18,9 +18,9 @@ public class Level {
     public float MAX_VERTICAL_VEL;
 
     public Level(String filename) {
-        blocks.add(new Block(BlockType.INVISIBLE, new Vector2(0, 0), new Vector2(8, ArkanoidGame.HEIGHT )));
-        blocks.add(new Block(BlockType.INVISIBLE, new Vector2((ArkanoidGame.WIDTH - 8 ) , 0), new Vector2(8, ArkanoidGame.HEIGHT )));
-        blocks.add(new Block(BlockType.INVISIBLE, new Vector2(0, ArkanoidGame.HEIGHT - 8 ), new Vector2(ArkanoidGame.WIDTH , 8)));
+//        blocks.add(new Block(BlockType.INVISIBLE, new Vector2(-8, 0), new Vector2(16, ArkanoidGame.HEIGHT )));
+//        blocks.add(new Block(BlockType.INVISIBLE, new Vector2((ArkanoidGame.WIDTH - 8 ) , 0), new Vector2(16, ArkanoidGame.HEIGHT )));
+//        blocks.add(new Block(BlockType.INVISIBLE, new Vector2(0, ArkanoidGame.HEIGHT - 8 ), new Vector2(ArkanoidGame.WIDTH , 16)));
         FileHandle handle = Gdx.files.internal("levels/" + filename);
         String mapFile = handle.readString();
         String lines[] = mapFile.split("\\r?\\n|\\r");
@@ -70,10 +70,11 @@ public class Level {
     }
 
     public void hit(Block block) {
-        if (block.type.lives == 1) {
+        if (block.lives == 1) {
             blocks.remove(block);
-        } else if (block.type.lives == 2) {
-            block.type.lives = 1;
+        } else if (block.lives == 2) {
+            block.lives = 1;
+            block.type = BlockType.SINGLE;
             block.reload();
         }
     }
@@ -85,7 +86,7 @@ public class Level {
     }
 
     public void render(SpriteBatch sb) {
-        sb.draw(bgImg, 0, 0, ArkanoidGame.WIDTH * ArkanoidGame.SCALE, ArkanoidGame.HEIGHT * ArkanoidGame.SCALE);
+        sb.draw(bgImg, 0, 0, ArkanoidGame.WIDTH, ArkanoidGame.HEIGHT);
         for (GameObject gameObject : blocks) {
             gameObject.render(sb);
         }
