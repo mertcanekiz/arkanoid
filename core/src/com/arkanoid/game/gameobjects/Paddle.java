@@ -1,7 +1,7 @@
 
 package com.arkanoid.game.gameobjects;
 
-import com.arkanoid.game.ArkanoidGame;
+import com.arkanoid.game.Arkanoid;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,17 +12,18 @@ public class Paddle extends GameObject {
     public static final float WIDTH = 32f;
     public static final float HEIGHT = 8f;
 
-    public static Texture img_normal = new Texture("paddle.png");
-    public static Texture img_large = new Texture("paddle_lg.png");
-    public static Texture img_small = new Texture("paddle_sm.png");
+    public static Texture img_normal = new Texture("images/paddle.png");
+    public static Texture img_large = new Texture("images/paddle_lg.png");
+    public static Texture img_small = new Texture("images/paddle_sm.png");
 
     public int lives = 3;
 
     public Paddle() {
         img = img_normal;
         this.size = new Vector2(WIDTH, HEIGHT);
-        this.pos.x = (ArkanoidGame.WIDTH - size.x) / 2.0f;
+        this.pos.x = (Arkanoid.WIDTH - size.x) / 2.0f;
         this.pos.y = 10;
+        enlarge();
     }
 
     public void enlarge() {
@@ -43,7 +44,7 @@ public class Paddle extends GameObject {
             pos.x += 200 * dt;
         }
         if (pos.x < 8) pos.x = 8;
-        if (pos.x > ArkanoidGame.WIDTH - 8 - size.x) pos.x = ArkanoidGame.WIDTH - 8 - size.x;
+        if (pos.x > Arkanoid.WIDTH - 8 - size.x) pos.x = Arkanoid.WIDTH - 8 - size.x;
     }
 
     @Override

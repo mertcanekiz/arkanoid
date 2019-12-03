@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 public class IncreasePaddleLength extends InstantPowerUp {
     public IncreasePaddleLength(Vector2 pos) {
         super(pos);
-        img = new Texture("powerups/R.png");
+        img = new Texture("images/powerups/R.png");
     }
     @Override
     public void apply() {

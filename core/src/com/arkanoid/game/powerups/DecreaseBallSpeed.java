@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 public class DecreaseBallSpeed extends InstantPowerUp {
     public DecreaseBallSpeed(Vector2 pos) {
         super(pos);
-        img = new Texture("powerups/S.png");
+        img = new Texture("images/powerups/S.png");
     }
 
     @Override

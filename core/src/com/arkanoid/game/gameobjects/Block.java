@@ -1,6 +1,5 @@
 package com.arkanoid.game.gameobjects;
 
-import com.arkanoid.game.ArkanoidGame;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -9,17 +8,17 @@ public class Block extends GameObject {
 
     public enum BlockType {
         INVISIBLE("block-0.png", Integer.MAX_VALUE),
-        RED("blocks/block-R.png", 1),
-        BLUE("blocks/block-B.png", 1),
-        YELLOW("blocks/block-Y.png", 1),
-        GREEN("blocks/block-G.png", 1),
-        MAGENTA("blocks/block-M.png", 1),
-        PINK("blocks/block-P.png", 1),
-        CYAN("blocks/block-C.png", 1),
-        WHITE("blocks/block-W.png", 1),
-        SINGLE("blocks/block-S.png", 1),
-        DOUBLE("blocks/block-D.png", 2),
-        UNBREAKABLE("blocks/block-U.png", Integer.MAX_VALUE);
+        RED("images/blocks/block-R.png", 1),
+        BLUE("images/blocks/block-B.png", 1),
+        YELLOW("images/blocks/block-Y.png", 1),
+        GREEN("images/blocks/block-G.png", 1),
+        MAGENTA("images/blocks/block-M.png", 1),
+        PINK("images/blocks/block-P.png", 1),
+        CYAN("images/blocks/block-C.png", 1),
+        WHITE("images/blocks/block-W.png", 1),
+        SINGLE("images/blocks/block-S.png", 1),
+        DOUBLE("images/blocks/block-D.png", 2),
+        UNBREAKABLE("images/blocks/block-U.png", Integer.MAX_VALUE);
 
         private Texture img;
         public int lives;

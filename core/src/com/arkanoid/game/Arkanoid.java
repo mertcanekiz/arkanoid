@@ -7,18 +7,18 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class ArkanoidGame extends Game {
+public class Arkanoid extends Game {
 
 	public static final int SCREEN_WIDTH = 256;
 	public static final int SCREEN_HEIGHT = 240;
     public static final int WIDTH = 192;
     public static final int HEIGHT = 232;
-    public static final int SCALE = 2;
+    public static final float SCALE = 2.0f;
 
-    private static ArkanoidGame instance = null;
+    private static Arkanoid instance = null;
 
-    public static ArkanoidGame getInstance() {
-        if (instance == null) instance = new ArkanoidGame();
+    public static Arkanoid getInstance() {
+        if (instance == null) instance = new Arkanoid();
         return instance;
     }
 

@@ -1,6 +1,5 @@
 package com.arkanoid.game.states;
 
-import com.arkanoid.game.ArkanoidGame;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -22,7 +21,7 @@ public class Button {
     public Button(int index, Vector2 pos) {
         this.index = index;
         for (int i = 0; i < 3; i++) {
-            images[i] = new Texture("menu/button_" + index + "_" + i + ".png");
+            images[i] = new Texture("images/menu/button_" + index + "_" + i + ".png");
         }
         this.pos = pos;
     }

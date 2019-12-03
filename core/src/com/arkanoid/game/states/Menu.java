@@ -1,8 +1,7 @@
 package com.arkanoid.game.states;
 
-import com.arkanoid.game.ArkanoidGame;
+import com.arkanoid.game.Arkanoid;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -11,14 +10,14 @@ public class Menu extends GameState {
 
     private Button newGameBtn = new Button(0, new Vector2(100, 100));
     private Button buttons[] = new Button[] {
-      new Button(0, new Vector2((ArkanoidGame.SCREEN_WIDTH - 100) / 2, ArkanoidGame.SCREEN_HEIGHT - 32)),
-      new Button(1, new Vector2((ArkanoidGame.SCREEN_WIDTH - 100) / 2, ArkanoidGame.SCREEN_HEIGHT - 64))
+      new Button(0, new Vector2((Arkanoid.SCREEN_WIDTH - 100) / 2, Arkanoid.SCREEN_HEIGHT - 32)),
+      new Button(1, new Vector2((Arkanoid.SCREEN_WIDTH - 100) / 2, Arkanoid.SCREEN_HEIGHT - 64))
     };
 
     @Override
     public void update(float dt) {
-        float mouseX = Gdx.input.getX() / ArkanoidGame.SCALE;
-        float mouseY = (Gdx.graphics.getHeight() - Gdx.input.getY()) / ArkanoidGame.SCALE;
+        float mouseX = Gdx.input.getX() / Arkanoid.SCALE;
+        float mouseY = (Gdx.graphics.getHeight() - Gdx.input.getY()) / Arkanoid.SCALE;
         System.out.println(mouseX + ", " + mouseY);
         for (Button button : buttons) {
             Rectangle buttonRect = new Rectangle(button.pos.x, button.pos.y, 100, 24);

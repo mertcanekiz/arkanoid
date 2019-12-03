@@ -21,7 +21,7 @@ public class Level {
 //        blocks.add(new Block(BlockType.INVISIBLE, new Vector2(-8, 0), new Vector2(16, ArkanoidGame.HEIGHT )));
 //        blocks.add(new Block(BlockType.INVISIBLE, new Vector2((ArkanoidGame.WIDTH - 8 ) , 0), new Vector2(16, ArkanoidGame.HEIGHT )));
 //        blocks.add(new Block(BlockType.INVISIBLE, new Vector2(0, ArkanoidGame.HEIGHT - 8 ), new Vector2(ArkanoidGame.WIDTH , 16)));
-        FileHandle handle = Gdx.files.internal("levels/" + filename);
+        FileHandle handle = Gdx.files.internal(filename);
         String mapFile = handle.readString();
         String lines[] = mapFile.split("\\r?\\n|\\r");
         String bgFilename = lines[0];
@@ -32,40 +32,40 @@ public class Level {
             for (int j = 0; j < tokens.length; j++) {
                 switch (tokens[j]) {
                     case "R":
-                        blocks.add(new Block(BlockType.RED, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH), ArkanoidGame.HEIGHT - i * Block.HEIGHT), new Vector2(Block.WIDTH, Block.HEIGHT)));
+                        blocks.add(new Block(BlockType.RED, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH), Arkanoid.HEIGHT - i * Block.HEIGHT), new Vector2(Block.WIDTH, Block.HEIGHT)));
                         break;
                     case "B":
-                        blocks.add(new Block(BlockType.BLUE, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH) , (ArkanoidGame.HEIGHT - i * Block.HEIGHT)), new Vector2(Block.WIDTH , Block.HEIGHT )));
+                        blocks.add(new Block(BlockType.BLUE, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH) , (Arkanoid.HEIGHT - i * Block.HEIGHT)), new Vector2(Block.WIDTH , Block.HEIGHT )));
                         break;
                     case "Y":
-                        blocks.add(new Block(BlockType.YELLOW, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH) , (ArkanoidGame.HEIGHT - i * Block.HEIGHT)), new Vector2(Block.WIDTH , Block.HEIGHT )));
+                        blocks.add(new Block(BlockType.YELLOW, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH) , (Arkanoid.HEIGHT - i * Block.HEIGHT)), new Vector2(Block.WIDTH , Block.HEIGHT )));
                         break;
                     case "G":
-                        blocks.add(new Block(BlockType.GREEN, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH) , (ArkanoidGame.HEIGHT - i * Block.HEIGHT)), new Vector2(Block.WIDTH , Block.HEIGHT )));
+                        blocks.add(new Block(BlockType.GREEN, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH) , (Arkanoid.HEIGHT - i * Block.HEIGHT)), new Vector2(Block.WIDTH , Block.HEIGHT )));
                         break;
                     case "M":
-                        blocks.add(new Block(BlockType.MAGENTA, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH) , (ArkanoidGame.HEIGHT - i * Block.HEIGHT)), new Vector2(Block.WIDTH , Block.HEIGHT )));
+                        blocks.add(new Block(BlockType.MAGENTA, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH) , (Arkanoid.HEIGHT - i * Block.HEIGHT)), new Vector2(Block.WIDTH , Block.HEIGHT )));
                         break;
                     case "P":
-                        blocks.add(new Block(BlockType.PINK, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH) , (ArkanoidGame.HEIGHT - i * Block.HEIGHT)), new Vector2(Block.WIDTH , Block.HEIGHT )));
+                        blocks.add(new Block(BlockType.PINK, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH) , (Arkanoid.HEIGHT - i * Block.HEIGHT)), new Vector2(Block.WIDTH , Block.HEIGHT )));
                         break;
                     case "C":
-                        blocks.add(new Block(BlockType.CYAN, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH) , (ArkanoidGame.HEIGHT - i * Block.HEIGHT)), new Vector2(Block.WIDTH , Block.HEIGHT )));
+                        blocks.add(new Block(BlockType.CYAN, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH) , (Arkanoid.HEIGHT - i * Block.HEIGHT)), new Vector2(Block.WIDTH , Block.HEIGHT )));
                         break;
                     case "W":
-                        blocks.add(new Block(BlockType.WHITE, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH) , (ArkanoidGame.HEIGHT - i * Block.HEIGHT)), new Vector2(Block.WIDTH , Block.HEIGHT )));
+                        blocks.add(new Block(BlockType.WHITE, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH) , (Arkanoid.HEIGHT - i * Block.HEIGHT)), new Vector2(Block.WIDTH , Block.HEIGHT )));
                         break;
                     case "D":
-                        blocks.add(new Block(BlockType.DOUBLE, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH) , (ArkanoidGame.HEIGHT - i * Block.HEIGHT)), new Vector2(Block.WIDTH , Block.HEIGHT )));
+                        blocks.add(new Block(BlockType.DOUBLE, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH) , (Arkanoid.HEIGHT - i * Block.HEIGHT)), new Vector2(Block.WIDTH , Block.HEIGHT )));
                         break;
                     case "U":
-                        blocks.add(new Block(BlockType.UNBREAKABLE, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH), (ArkanoidGame.HEIGHT - i * Block.HEIGHT)), new Vector2(Block.WIDTH, Block.HEIGHT)));
+                        blocks.add(new Block(BlockType.UNBREAKABLE, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH), (Arkanoid.HEIGHT - i * Block.HEIGHT)), new Vector2(Block.WIDTH, Block.HEIGHT)));
                         break;
                 }
             }
             System.out.println();
         }
-        bgImg = new Texture(bgFilename);
+        bgImg = new Texture("images/" + bgFilename);
 
     }
 
@@ -86,7 +86,7 @@ public class Level {
     }
 
     public void render(SpriteBatch sb) {
-        sb.draw(bgImg, 0, 0, ArkanoidGame.WIDTH, ArkanoidGame.HEIGHT);
+        sb.draw(bgImg, 0, 0, Arkanoid.WIDTH, Arkanoid.HEIGHT);
         for (GameObject gameObject : blocks) {
             gameObject.render(sb);
         }
