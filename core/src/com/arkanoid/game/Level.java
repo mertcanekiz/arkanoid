@@ -3,6 +3,7 @@ package com.arkanoid.game;
 import com.arkanoid.game.gameobjects.Block;
 import com.arkanoid.game.gameobjects.Block.BlockType;
 import com.arkanoid.game.gameobjects.GameObject;
+import com.arkanoid.game.powerups.PowerUp;
 import com.arkanoid.game.states.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -76,6 +77,10 @@ public class Level {
         if (block.lives == 1) {
             blocks.remove(block);
             Game.getInstance().paddle.score += 60;
+            float random = Util.random(0, 1);
+            if (random < 0.1f) {
+                Game.getInstance().powerups.add(PowerUp.randomPowerUp(block.pos));
+            }
         } else if (block.lives == 2) {
             block.lives = 1;
             block.type = BlockType.SINGLE;
