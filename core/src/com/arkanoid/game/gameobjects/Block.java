@@ -76,8 +76,4 @@ public class Block extends GameObject {
             sb.draw(type.img, pos.x, pos.y, WIDTH, HEIGHT);
         }
     }
-
-    @Override
-    public void dispose() {
-    }
 }
