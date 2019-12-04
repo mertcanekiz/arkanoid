@@ -3,6 +3,7 @@ package com.arkanoid.game.states;
 import com.arkanoid.game.Arkanoid;
 import com.arkanoid.game.Level;
 import com.arkanoid.game.gameobjects.Ball;
+import com.arkanoid.game.gameobjects.Block;
 import com.arkanoid.game.gameobjects.Paddle;
 import com.arkanoid.game.powerups.DecreaseBallSpeed;
 import com.arkanoid.game.powerups.IncreaseBallSpeed;
@@ -26,20 +27,27 @@ public class Game extends GameState {
         return instance;
     }
 
-    public Level level;
+    public Level[] levels = {
+            new Level("levels/level-0.txt"),
+            new Level("levels/level-1.txt"),
+            new Level("levels/level-2.txt"),
+            new Level("levels/level-3.txt"),
+    };
+    public int currentLevel = 0;
     public Paddle paddle;
     public Ball ball;
     public ArrayList<PowerUp> powerups = new ArrayList<>();
     public PowerUp toBeRemoved;
 
     public Game() {
-        level = new Level("levels/level-3.txt");
         paddle = new Paddle();
         ball = new Ball(new Vector2(50, 50));
         font = new BitmapFont(Gdx.files.internal("fonts/retro.fnt"), Gdx.files.internal("fonts/retro.png"), false);
-        powerups.add(new IncreasePaddleLength(new Vector2(150, 200)));
-        powerups.add(new IncreaseBallSpeed(new Vector2(24, 100)));
-        powerups.add(new DecreaseBallSpeed(new Vector2(24, 250)));
+    }
+
+    public void reset() {
+        paddle.reset();
+        ball.reset();
     }
 
     @Override
@@ -48,16 +56,22 @@ public class Game extends GameState {
             powerups.remove(toBeRemoved);
         }
         paddle.update(dt);
-        level.update(dt);
+        levels[currentLevel].update(dt);
         ball.update(dt);
         for (PowerUp powerup : powerups) {
             powerup.update(dt);
+        }
+
+        int blocksLeft = (int) levels[currentLevel].blocks.stream().filter(block -> block.type != Block.BlockType.UNBREAKABLE).count();
+        if (blocksLeft == 0) {
+            currentLevel++;
+            reset();
         }
     }
 
     @Override
     public void render(SpriteBatch sb) {
-        level.render(sb);
+        levels[currentLevel].render(sb);
         paddle.render(sb);
         ball.render(sb);
         for (PowerUp powerup : powerups) {
@@ -95,6 +109,8 @@ public class Game extends GameState {
     public void dispose() {
         paddle.dispose();
         ball.dispose();
-        level.dispose();
+        for (Level level : levels) {
+            level.dispose();
+        }
     }
 }

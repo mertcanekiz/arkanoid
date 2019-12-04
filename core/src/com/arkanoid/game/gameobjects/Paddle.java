@@ -23,7 +23,13 @@ public class Paddle extends GameObject {
         this.size = new Vector2(WIDTH, HEIGHT);
         this.pos.x = (Arkanoid.WIDTH - size.x) / 2.0f;
         this.pos.y = 10;
-        enlarge();
+    }
+
+    public void reset() {
+        this.pos.x = 100;
+        this.pos.y = 10;
+        this.vel.x = 0.0f;
+        this.vel.y = 0.0f;
     }
 
     public void enlarge() {

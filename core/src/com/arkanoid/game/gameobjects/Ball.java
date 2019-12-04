@@ -16,25 +16,24 @@ public class Ball extends GameObject {
     public static final int WIDTH = 5;
     public static final int HEIGHT = 5;
 
-    private Sound paddleSound;
-    private Sound blockSound;
-    private Sound unbreakableBlockSound;
-
-    private long paddleSoundId;
-    private long blockSoundId;
-    private long unbreakableSoundId;
+    private static Sound paddleSound = Gdx.audio.newSound(Gdx.files.internal("sfx/paddle.wav"));
+    private static Sound blockSound = Gdx.audio.newSound(Gdx.files.internal("sfx/block.wav"));
+    private static Sound unbreakableBlockSound = Gdx.audio.newSound(Gdx.files.internal("sfx/unbreakable.wav"));
 
     private boolean playing = false;
+
+    private static Texture ballImg = new Texture("images/ball.png");
 
     public Ball(Vector2 pos) {
         this.pos = pos;
         this.size = new Vector2(WIDTH, HEIGHT);
         this.vel = new Vector2((int)(new Random().nextFloat() * 100), -60);
-        this.img = new Texture("images/ball.png");
+        this.img = ballImg;
+    }
 
-        this.paddleSound = Gdx.audio.newSound(Gdx.files.internal("sfx/paddle.wav"));
-        this.blockSound = Gdx.audio.newSound(Gdx.files.internal("sfx/block.wav"));
-        this.unbreakableBlockSound = Gdx.audio.newSound(Gdx.files.internal("sfx/unbreakable.wav"));
+    public void reset() {
+        this.pos = new Vector2(50, 50);
+        this.vel = new Vector2((int)(new Random().nextFloat() * 100), -60);
     }
 
     float map(float x, float in_min, float in_max, float out_min, float out_max) {
@@ -58,12 +57,12 @@ public class Ball extends GameObject {
             vel.y *= -1;
             pos.y = Arkanoid.HEIGHT - 8 - size.y;
         }
-        for (Block go : Game.getInstance().level.blocks) {
+        for (Block go : Game.getInstance().levels[Game.getInstance().currentLevel].blocks) {
             Rectangle blockRect = new Rectangle(go.pos.x, go.pos.y, go.size.x, go.size.y);
             Vector2 goCenter = new Vector2(go.pos.x + go.size.x / 2, go.pos.y + go.size.y / 2);
             if (blockRect.overlaps(ballRect)) {
                 hitBlock = go;
-                if (go.type == BlockType.UNBREAKABLE) {
+                if (go.type == BlockType.UNBREAKABLE || go.type == BlockType.DOUBLE) {
                     blockSound.stop();
                     unbreakableBlockSound.stop();
                     unbreakableBlockSound.play();
@@ -112,13 +111,13 @@ public class Ball extends GameObject {
             }
         }
         if (hitBlock != null && hitBlock.type != BlockType.INVISIBLE && hitBlock.type != BlockType.UNBREAKABLE) {
-            Game.getInstance().level.hit(hitBlock);
+            Game.getInstance().levels[Game.getInstance().currentLevel].hit(hitBlock);
         }
 
         Paddle paddle = Game.getInstance().paddle;
         Rectangle paddleRect = new Rectangle(paddle.pos.x, paddle.pos.y + paddle.size.y - 4, paddle.size.x, 4);
-        float MAX_VERTICAL_VEL = Game.getInstance().level.MAX_VERTICAL_VEL;
-        float MAX_HORIZONTAL_VEL = Game.getInstance().level.MAX_HORIZONTAL_VEL;
+        float MAX_VERTICAL_VEL = Game.getInstance().levels[Game.getInstance().currentLevel].MAX_VERTICAL_VEL;
+        float MAX_HORIZONTAL_VEL = Game.getInstance().levels[Game.getInstance().currentLevel].MAX_HORIZONTAL_VEL;
         if (paddleRect.overlaps(ballRect)) {
             float percentage = Math.abs(pos.x - paddle.pos.x) / paddle.size.x;
             vel.x = map(percentage, 0f, 1f, -MAX_HORIZONTAL_VEL, MAX_HORIZONTAL_VEL);

@@ -18,52 +18,54 @@ public class Level {
     public float MAX_VERTICAL_VEL;
 
     public Level(String filename) {
-//        blocks.add(new Block(BlockType.INVISIBLE, new Vector2(-8, 0), new Vector2(16, ArkanoidGame.HEIGHT )));
-//        blocks.add(new Block(BlockType.INVISIBLE, new Vector2((ArkanoidGame.WIDTH - 8 ) , 0), new Vector2(16, ArkanoidGame.HEIGHT )));
-//        blocks.add(new Block(BlockType.INVISIBLE, new Vector2(0, ArkanoidGame.HEIGHT - 8 ), new Vector2(ArkanoidGame.WIDTH , 16)));
         FileHandle handle = Gdx.files.internal(filename);
         String mapFile = handle.readString();
-        String lines[] = mapFile.split("\\r?\\n|\\r");
+        String[] lines = mapFile.split("\\r?\\n|\\r");
         String bgFilename = lines[0];
         MAX_HORIZONTAL_VEL = Float.parseFloat(lines[1]);
         MAX_VERTICAL_VEL = Float.parseFloat(lines[2]);
         for (int i = 3; i < lines.length; i++) {
-            String tokens[] = lines[i].split(" ");
+            String[] tokens = lines[i].split(" ");
             for (int j = 0; j < tokens.length; j++) {
+                BlockType type;
+
                 switch (tokens[j]) {
                     case "R":
-                        blocks.add(new Block(BlockType.RED, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH), Arkanoid.HEIGHT - i * Block.HEIGHT), new Vector2(Block.WIDTH, Block.HEIGHT)));
+                        type = BlockType.RED;
                         break;
                     case "B":
-                        blocks.add(new Block(BlockType.BLUE, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH) , (Arkanoid.HEIGHT - i * Block.HEIGHT)), new Vector2(Block.WIDTH , Block.HEIGHT )));
+                        type = BlockType.BLUE;
                         break;
                     case "Y":
-                        blocks.add(new Block(BlockType.YELLOW, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH) , (Arkanoid.HEIGHT - i * Block.HEIGHT)), new Vector2(Block.WIDTH , Block.HEIGHT )));
+                        type = BlockType.YELLOW;
                         break;
                     case "G":
-                        blocks.add(new Block(BlockType.GREEN, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH) , (Arkanoid.HEIGHT - i * Block.HEIGHT)), new Vector2(Block.WIDTH , Block.HEIGHT )));
+                        type = BlockType.GREEN;
                         break;
                     case "M":
-                        blocks.add(new Block(BlockType.MAGENTA, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH) , (Arkanoid.HEIGHT - i * Block.HEIGHT)), new Vector2(Block.WIDTH , Block.HEIGHT )));
+                        type = BlockType.MAGENTA;
                         break;
                     case "P":
-                        blocks.add(new Block(BlockType.PINK, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH) , (Arkanoid.HEIGHT - i * Block.HEIGHT)), new Vector2(Block.WIDTH , Block.HEIGHT )));
+                        type = BlockType.PINK;
                         break;
                     case "C":
-                        blocks.add(new Block(BlockType.CYAN, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH) , (Arkanoid.HEIGHT - i * Block.HEIGHT)), new Vector2(Block.WIDTH , Block.HEIGHT )));
+                        type = BlockType.CYAN;
                         break;
                     case "W":
-                        blocks.add(new Block(BlockType.WHITE, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH) , (Arkanoid.HEIGHT - i * Block.HEIGHT)), new Vector2(Block.WIDTH , Block.HEIGHT )));
+                        type = BlockType.WHITE;
                         break;
                     case "D":
-                        blocks.add(new Block(BlockType.DOUBLE, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH) , (Arkanoid.HEIGHT - i * Block.HEIGHT)), new Vector2(Block.WIDTH , Block.HEIGHT )));
+                        type = BlockType.DOUBLE;
                         break;
                     case "U":
-                        blocks.add(new Block(BlockType.UNBREAKABLE, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH), (Arkanoid.HEIGHT - i * Block.HEIGHT)), new Vector2(Block.WIDTH, Block.HEIGHT)));
+                        type = BlockType.UNBREAKABLE;
                         break;
+                    default:
+                        continue;
                 }
+
+                blocks.add(new Block(type, new Vector2((Block.WIDTH / 2 + j * Block.WIDTH) , (Arkanoid.HEIGHT - i * Block.HEIGHT)), new Vector2(Block.WIDTH , Block.HEIGHT )));
             }
-            System.out.println();
         }
         bgImg = new Texture("images/" + bgFilename);
 
