@@ -5,22 +5,16 @@ import com.arkanoid.game.Level;
 import com.arkanoid.game.gameobjects.Ball;
 import com.arkanoid.game.gameobjects.Block;
 import com.arkanoid.game.gameobjects.Paddle;
-import com.arkanoid.game.powerups.DecreaseBallSpeed;
-import com.arkanoid.game.powerups.IncreaseBallSpeed;
-import com.arkanoid.game.powerups.IncreasePaddleLength;
 import com.arkanoid.game.powerups.PowerUp;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
 
 public class Game extends GameState {
     private static Game instance = null;
-
 
     public static Game getInstance() {
         if (instance == null) instance = new Game();
@@ -40,7 +34,7 @@ public class Game extends GameState {
 
     public Game() {
         paddle = new Paddle();
-        ball = new Ball(new Vector2(50, 50));
+        ball = new Ball(paddle);
     }
 
     public void reset() {
@@ -86,7 +80,6 @@ public class Game extends GameState {
             powerup.render(sb);
         }
         Arkanoid.font.getRegion().getTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-
 
 
         Arkanoid.font.setColor(new Color(0xb53121ff));

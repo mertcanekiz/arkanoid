@@ -7,11 +7,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
 public class IncreasePaddleLength extends InstantPowerUp {
-    private Sound sound;
+    private static Sound sound = Gdx.audio.newSound(Gdx.files.internal("sfx/enlarge.wav"));
     public IncreasePaddleLength(Vector2 pos) {
         super(pos);
         img = new Texture("images/powerups/R.png");
-        sound = Gdx.audio.newSound(Gdx.files.internal("sfx/enlarge.wav"));
     }
     @Override
     public void apply() {
@@ -20,6 +19,5 @@ public class IncreasePaddleLength extends InstantPowerUp {
     }
     public void dispose() {
         super.dispose();
-        sound.dispose();
     }
 }

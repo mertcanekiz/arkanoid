@@ -1,5 +1,6 @@
 package com.arkanoid.game.powerups;
 
+import com.arkanoid.game.Util;
 import com.arkanoid.game.gameobjects.Paddle;
 import com.arkanoid.game.states.Game;
 import com.badlogic.gdx.graphics.Texture;
@@ -8,6 +9,13 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public abstract class PowerUp {
+
+    private static String[] powerupTypes = {
+      "IncreasePaddleLength",
+      "DecreaseBallSpeed",
+      "IncreaseBallSpeed",
+    };
+
     protected Texture img;
     protected Vector2 pos;
     protected Vector2 size = new Vector2(22, 12);
@@ -38,5 +46,19 @@ public abstract class PowerUp {
 
     public void render(SpriteBatch sb) {
         sb.draw(img, pos.x, pos.y, size.x, size.y);
+    }
+
+    public static PowerUp randomPowerUp(Vector2 pos) {
+        int index = (int) Util.random(0, powerupTypes.length);
+        String type = powerupTypes[index];
+        switch (type) {
+            case "IncreaseBallSpeed":
+                return new IncreaseBallSpeed(pos);
+            case "DecreaseBallSpeed":
+                return new DecreaseBallSpeed(pos);
+            case "IncreasePaddleLength":
+                return new IncreasePaddleLength(pos);
+        }
+        return null;
     }
 }
