@@ -3,6 +3,7 @@ package com.arkanoid.game;
 import com.arkanoid.game.gameobjects.Block;
 import com.arkanoid.game.gameobjects.Block.BlockType;
 import com.arkanoid.game.gameobjects.GameObject;
+import com.arkanoid.game.states.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
@@ -74,10 +75,12 @@ public class Level {
     public void hit(Block block) {
         if (block.lives == 1) {
             blocks.remove(block);
+            Game.getInstance().paddle.score += 60;
         } else if (block.lives == 2) {
             block.lives = 1;
             block.type = BlockType.SINGLE;
             block.reload();
+            Game.getInstance().paddle.score += 40;
         }
     }
 

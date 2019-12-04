@@ -17,6 +17,7 @@ public class Paddle extends GameObject {
     public static Texture img_small = new Texture("images/paddle_sm.png");
 
     public int lives = 3;
+    public int score = 0;
 
     public Paddle() {
         img = img_normal;

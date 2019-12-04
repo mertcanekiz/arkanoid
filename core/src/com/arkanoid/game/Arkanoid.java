@@ -5,6 +5,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Arkanoid extends Game {
@@ -15,10 +16,17 @@ public class Arkanoid extends Game {
     public static final int HEIGHT = 232;
     public static final float SCALE = 2.0f;
 
+	public static BitmapFont font;
+	public static float charWidth;
+	public static float charHeight;
+
     private static Arkanoid instance = null;
 
     public static Arkanoid getInstance() {
-        if (instance == null) instance = new Arkanoid();
+        if (instance == null) {
+        	instance = new Arkanoid();
+
+		}
         return instance;
     }
 
@@ -32,6 +40,9 @@ public class Arkanoid extends Game {
 		camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
 		camera.update();
 		GameState.setState(GameState.MENU);
+		font = new BitmapFont(Gdx.files.internal("fonts/retro.fnt"), Gdx.files.internal("fonts/retro.png"), false);
+		charWidth = font.getData().getGlyph('m').width * font.getScaleX();
+		charHeight = font.getData().getGlyph('M').height * font.getScaleY();
 	}
 
 	@Override

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class Game extends GameState {
     private static Game instance = null;
-    private static BitmapFont font;
+
 
     public static Game getInstance() {
         if (instance == null) instance = new Game();
@@ -28,7 +28,6 @@ public class Game extends GameState {
     }
 
     public Level[] levels = {
-            new Level("levels/level-0.txt"),
             new Level("levels/level-1.txt"),
             new Level("levels/level-2.txt"),
             new Level("levels/level-3.txt"),
@@ -42,7 +41,6 @@ public class Game extends GameState {
     public Game() {
         paddle = new Paddle();
         ball = new Ball(new Vector2(50, 50));
-        font = new BitmapFont(Gdx.files.internal("fonts/retro.fnt"), Gdx.files.internal("fonts/retro.png"), false);
     }
 
     public void reset() {
@@ -87,21 +85,21 @@ public class Game extends GameState {
         for (PowerUp powerup : powerups) {
             powerup.render(sb);
         }
-        font.getRegion().getTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        Arkanoid.font.getRegion().getTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
-        float w = font.getData().getGlyph('m').width * font.getScaleX();
-        float h = font.getData().getGlyph('M').height * font.getScaleY();
 
-        font.setColor(new Color(0xb53121ff));
-        font.draw(sb, "HIGH", Arkanoid.WIDTH + 5, Arkanoid.HEIGHT - 10);
-        font.draw(sb, "SCORE", Arkanoid.SCREEN_WIDTH - w * 6 + 2, Arkanoid.HEIGHT - 10 - h);
-        font.setColor(Color.WHITE);
-        font.draw(sb, "50000", Arkanoid.SCREEN_WIDTH - w * 6 + 2, Arkanoid.HEIGHT - 10 - h * 2);
 
-        font.setColor(new Color(0xb53121ff));
-        font.draw(sb, "1UP", Arkanoid.WIDTH + w / 2, Arkanoid.HEIGHT - 50);
-        font.setColor(Color.WHITE);
-        font.draw(sb, "0", Arkanoid.SCREEN_WIDTH - w * 2, Arkanoid.HEIGHT - 50 - h);
+        Arkanoid.font.setColor(new Color(0xb53121ff));
+        Arkanoid.font.draw(sb, "HIGH", Arkanoid.WIDTH + 5, Arkanoid.HEIGHT - 10);
+        Arkanoid.font.draw(sb, "SCORE", Arkanoid.SCREEN_WIDTH - Arkanoid.charWidth * 6 + 2, Arkanoid.HEIGHT - 10 - Arkanoid.charHeight);
+        Arkanoid.font.setColor(Color.WHITE);
+        Arkanoid.font.draw(sb, "50000", Arkanoid.SCREEN_WIDTH - Arkanoid.charWidth * 6 + 2, Arkanoid.HEIGHT - 10 - Arkanoid.charHeight * 2);
+
+        Arkanoid.font.setColor(new Color(0xb53121ff));
+        Arkanoid.font.draw(sb, "1UP", Arkanoid.WIDTH + Arkanoid.charWidth / 2, Arkanoid.HEIGHT - 50);
+        Arkanoid.font.setColor(Color.WHITE);
+        String score = String.valueOf(paddle.score);
+        Arkanoid.font.draw(sb, score, Arkanoid.SCREEN_WIDTH - Arkanoid.charWidth * (score.length() + 1), Arkanoid.HEIGHT - 50 - Arkanoid.charHeight);
 
         for (int i = 0; i < paddle.lives; i++) {
             float x = (i % 3) * (Paddle.WIDTH / 2f + 2);
@@ -109,10 +107,10 @@ public class Game extends GameState {
             sb.draw(Paddle.img_normal, Arkanoid.WIDTH + 5 + x, Arkanoid.HEIGHT - 120 + y, Paddle.WIDTH / 2f, Paddle.HEIGHT / 2f);
         }
 
-        font.setColor(new Color(0xb53121ff));
-        font.draw(sb, "ROUND", Arkanoid.SCREEN_WIDTH - w * 6, Arkanoid.HEIGHT - 180);
-        font.setColor(Color.WHITE);
-        font.draw(sb, String.valueOf(currentLevel), Arkanoid.SCREEN_WIDTH - w  - 7, Arkanoid.HEIGHT - 180 - h);
+        Arkanoid.font.setColor(new Color(0xb53121ff));
+        Arkanoid.font.draw(sb, "ROUND", Arkanoid.SCREEN_WIDTH - Arkanoid.charWidth * 6, Arkanoid.HEIGHT - 180);
+        Arkanoid.font.setColor(Color.WHITE);
+        Arkanoid.font.draw(sb, String.valueOf(currentLevel + 1), Arkanoid.SCREEN_WIDTH - Arkanoid.charWidth  - 7, Arkanoid.HEIGHT - 180 - Arkanoid.charHeight);
     }
 
     @Override
