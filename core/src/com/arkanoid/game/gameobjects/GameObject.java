@@ -11,9 +11,9 @@ public abstract class GameObject {
     public Texture img;
 
     public GameObject() {
-        this.pos = Vector2.Zero;
-        this.vel = Vector2.Zero;
-        this.size = Vector2.Zero;
+        this.pos = new Vector2(0, 0);
+        this.vel = new Vector2(0, 0);
+        this.size = new Vector2(0, 0);
     }
 
     public abstract void update(float dt);

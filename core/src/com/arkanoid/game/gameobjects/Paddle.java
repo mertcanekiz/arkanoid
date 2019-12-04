@@ -26,8 +26,7 @@ public class Paddle extends GameObject {
     }
 
     public void reset() {
-        this.pos.x = 100;
-        this.pos.y = 10;
+        this.pos.x = (Arkanoid.WIDTH - size.x) / 2.0f;
         this.vel.x = 0.0f;
         this.vel.y = 0.0f;
     }
