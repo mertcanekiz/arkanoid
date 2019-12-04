@@ -57,6 +57,9 @@ public class Ball extends GameObject {
             vel.y *= -1;
             pos.y = Arkanoid.HEIGHT - 8 - size.y;
         }
+        if (pos.y < 0) {
+            Game.getInstance().die();
+        }
         for (Block go : Game.getInstance().levels[Game.getInstance().currentLevel].blocks) {
             Rectangle blockRect = new Rectangle(go.pos.x, go.pos.y, go.size.x, go.size.y);
             Vector2 goCenter = new Vector2(go.pos.x + go.size.x / 2, go.pos.y + go.size.y / 2);
@@ -140,6 +143,9 @@ public class Ball extends GameObject {
 
     @Override
     public void dispose() {
-        img.dispose();
+        ballImg.dispose();
+        unbreakableBlockSound.dispose();
+        blockSound.dispose();
+        paddleSound.dispose();
     }
 }

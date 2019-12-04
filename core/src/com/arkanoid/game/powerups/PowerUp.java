@@ -20,6 +20,9 @@ public abstract class PowerUp {
     public boolean applied = false;
 
     public abstract void apply();
+    public void dispose() {
+        img.dispose();
+    }
 
     public void update(float dt) {
         pos.x += vel.x * dt;

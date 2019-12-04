@@ -18,4 +18,8 @@ public class IncreasePaddleLength extends InstantPowerUp {
         Game.getInstance().paddle.enlarge();
         sound.play();
     }
+    public void dispose() {
+        super.dispose();
+        sound.dispose();
+    }
 }

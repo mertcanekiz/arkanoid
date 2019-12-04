@@ -18,7 +18,6 @@ public class Menu extends GameState {
     public void update(float dt) {
         float mouseX = Gdx.input.getX() / Arkanoid.SCALE;
         float mouseY = (Gdx.graphics.getHeight() - Gdx.input.getY()) / Arkanoid.SCALE;
-        System.out.println(mouseX + ", " + mouseY);
         for (Button button : buttons) {
             Rectangle buttonRect = new Rectangle(button.pos.x, button.pos.y, 100, 24);
             if (buttonRect.contains(new Vector2(mouseX, mouseY))) {

@@ -50,9 +50,19 @@ public class Game extends GameState {
         ball.reset();
     }
 
+    public void die() {
+        if (paddle.lives > 1) {
+            paddle.lives--;
+            reset();
+        } else {
+            Gdx.app.exit();
+        }
+    }
+
     @Override
     public void update(float dt) {
         if (toBeRemoved != null) {
+            toBeRemoved.dispose();
             powerups.remove(toBeRemoved);
         }
         paddle.update(dt);
@@ -102,7 +112,7 @@ public class Game extends GameState {
         font.setColor(new Color(0xb53121ff));
         font.draw(sb, "ROUND", Arkanoid.SCREEN_WIDTH - w * 6, Arkanoid.HEIGHT - 180);
         font.setColor(Color.WHITE);
-        font.draw(sb, "1", Arkanoid.SCREEN_WIDTH - w  - 7, Arkanoid.HEIGHT - 180 - h);
+        font.draw(sb, String.valueOf(currentLevel), Arkanoid.SCREEN_WIDTH - w  - 7, Arkanoid.HEIGHT - 180 - h);
     }
 
     @Override
