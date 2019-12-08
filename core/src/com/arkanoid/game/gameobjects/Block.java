@@ -63,6 +63,7 @@ public class Block extends GameObject {
 
     public void reload() {
         type = BlockType.SINGLE;
+        System.out.println("I became single");
     }
 
     @Override

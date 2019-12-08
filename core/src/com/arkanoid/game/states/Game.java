@@ -7,6 +7,7 @@ import com.arkanoid.game.gameobjects.Block;
 import com.arkanoid.game.gameobjects.Paddle;
 import com.arkanoid.game.powerups.PowerUp;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -21,20 +22,33 @@ public class Game extends GameState {
         return instance;
     }
 
-    public Level[] levels = {
-            new Level("levels/level-1.txt"),
-            new Level("levels/level-2.txt"),
-            new Level("levels/level-3.txt"),
+    public ArrayList<Level> levels = new ArrayList<>();{
+
     };
-    public int currentLevel = 0;
+    public int currentLevel = 1;
     public Paddle paddle;
     public Ball ball;
     public ArrayList<PowerUp> powerups = new ArrayList<>();
     public PowerUp toBeRemoved;
 
+    private boolean paused = false;
+
     public Game() {
         paddle = new Paddle();
         ball = new Ball(paddle);
+
+    }
+
+    public void restart() {
+        reset();
+        paddle.lives = 3;
+        levels = new ArrayList<>();
+        levels.add(new Level("levels/level-1.txt"));
+        levels.add(new Level("levels/level-2.txt"));
+        levels.add(new Level("levels/level-3.txt"));
+        powerups = new ArrayList<>();
+        currentLevel = 1;
+        paused = false;
     }
 
     public void reset() {
@@ -47,33 +61,53 @@ public class Game extends GameState {
             paddle.lives--;
             reset();
         } else {
-            Gdx.app.exit();
+            paused = true;
+            GameState.setState(GameState.HIGHSCORES);
+            Gdx.input.getTextInput(new HighScores(), "New High Score", "", "");
         }
     }
 
     @Override
     public void update(float dt) {
-        if (toBeRemoved != null) {
-            toBeRemoved.dispose();
-            powerups.remove(toBeRemoved);
-        }
-        paddle.update(dt);
-        levels[currentLevel].update(dt);
-        ball.update(dt);
-        for (PowerUp powerup : powerups) {
-            powerup.update(dt);
+        if (!paused) {
+            if (toBeRemoved != null) {
+                toBeRemoved.dispose();
+                powerups.remove(toBeRemoved);
+            }
+            paddle.update(dt);
+            levels.get(currentLevel).update(dt);
+            ball.update(dt);
+            for (int i = powerups.size() - 1; i >= 0; i--) {
+                powerups.get(i).update(dt);
+                if (powerups.get(i).pos.y < 0) {
+                    powerups.remove(i);
+                }
+            }
+
+            int blocksLeft = (int) levels.get(currentLevel).blocks.stream().filter(block -> block.type != Block.BlockType.UNBREAKABLE).count();
+            if (blocksLeft == 0) {
+                currentLevel++;
+                reset();
+            }
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+                paused = true;
+            }
+        } else {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+                paused = false;
+            }
         }
 
-        int blocksLeft = (int) levels[currentLevel].blocks.stream().filter(block -> block.type != Block.BlockType.UNBREAKABLE).count();
-        if (blocksLeft == 0) {
-            currentLevel++;
-            reset();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
+            GameState.setState(GameState.MENU);
         }
     }
 
     @Override
     public void render(SpriteBatch sb) {
-        levels[currentLevel].render(sb);
+        sb.setColor(1, 1, 1, 1);
+        levels.get(currentLevel).render(sb);
         paddle.render(sb);
         ball.render(sb);
         for (PowerUp powerup : powerups) {
@@ -104,6 +138,10 @@ public class Game extends GameState {
         Arkanoid.font.draw(sb, "ROUND", Arkanoid.SCREEN_WIDTH - Arkanoid.charWidth * 6, Arkanoid.HEIGHT - 180);
         Arkanoid.font.setColor(Color.WHITE);
         Arkanoid.font.draw(sb, String.valueOf(currentLevel + 1), Arkanoid.SCREEN_WIDTH - Arkanoid.charWidth  - 7, Arkanoid.HEIGHT - 180 - Arkanoid.charHeight);
+
+        if (paused) {
+            Arkanoid.font.draw(sb, "PAUSED", (Arkanoid.WIDTH - Arkanoid.charWidth * 6) / 2.0f, 100);
+        }
     }
 
     @Override

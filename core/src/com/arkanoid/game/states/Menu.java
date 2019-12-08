@@ -31,6 +31,12 @@ public class Menu extends GameState {
                 case 0:
                     GameState.setState(GameState.GAME);
                     break;
+                case 1:
+                    GameState.setState(GameState.OPTIONS);
+                    break;
+                case 2:
+                    GameState.setState(GameState.HIGHSCORES);
+                    break;
                 case 5:
                     Gdx.app.exit();
                     break;

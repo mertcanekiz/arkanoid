@@ -8,10 +8,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-
-import java.util.Random;
 
 public class Ball extends GameObject {
 
@@ -26,7 +26,9 @@ public class Ball extends GameObject {
 
     private static Texture ballImg = new Texture("images/ball.png");
 
-    private boolean isAttached = true;
+    private boolean attached = true;
+    private boolean fireball = false;
+    private boolean softball = false;
     private float offset;
 
     public Ball(Paddle paddle) {
@@ -42,23 +44,40 @@ public class Ball extends GameObject {
     public void attach(Paddle paddle) {
         offset = (Util.random(-0.4f, 0.4f)) * paddle.size.x;
         System.out.println(offset);
-        isAttached = true;
+        attached = true;
         this.vel = new Vector2(0, 0);
     }
 
     public void detach(Paddle paddle) {
-        float MAX_VERTICAL_VEL = Game.getInstance().levels[Game.getInstance().currentLevel].MAX_VERTICAL_VEL;
-        float MAX_HORIZONTAL_VEL = Game.getInstance().levels[Game.getInstance().currentLevel].MAX_HORIZONTAL_VEL;
+        float MAX_VERTICAL_VEL = Game.getInstance().levels.get(Game.getInstance().currentLevel).MAX_VERTICAL_VEL;
+        float MAX_HORIZONTAL_VEL = Game.getInstance().levels.get(Game.getInstance().currentLevel).MAX_HORIZONTAL_VEL;
         float percentage = Math.abs(pos.x - paddle.pos.x) / paddle.size.x;
         vel.x = Util.map(percentage, 0f, 1f, -MAX_HORIZONTAL_VEL, MAX_HORIZONTAL_VEL);
         vel.y = 60;
-        isAttached = false;
+        attached = false;
+    }
+
+    public void setFireball(boolean fireball) {
+        this.fireball = fireball;
+        this.softball = false;
+    }
+
+    public void setSoftball(boolean softball) {
+        this.softball = softball;
+        this.fireball = false;
+    }
+
+    public boolean isFireball() {
+        return fireball;
+    }
+
+    public boolean isSoftball() {
+        return softball;
     }
 
     @Override
     public void update(float dt) {
-
-        if (isAttached) {
+        if (attached) {
             Paddle paddle = Game.getInstance().paddle;
             pos.x = paddle.pos.x + paddle.size.x / 2f - size.x / 2f + offset;
             pos.y = paddle.pos.y + paddle.size.y;
@@ -84,12 +103,18 @@ public class Ball extends GameObject {
             if (pos.y < 0) {
                 Game.getInstance().die();
             }
-            for (Block go : Game.getInstance().levels[Game.getInstance().currentLevel].blocks) {
-                Rectangle blockRect = new Rectangle(go.pos.x, go.pos.y, go.size.x, go.size.y);
-                Vector2 goCenter = new Vector2(go.pos.x + go.size.x / 2, go.pos.y + go.size.y / 2);
+            for (int i = Game.getInstance().levels.get(Game.getInstance().currentLevel).blocks.size() - 1; i >= 0; i--) {
+                Block block = Game.getInstance().levels.get(Game.getInstance().currentLevel).blocks.get(i);
+                Rectangle blockRect = new Rectangle(block.pos.x, block.pos.y, block.size.x, block.size.y);
+                Vector2 goCenter = new Vector2(block.pos.x + block.size.x / 2, block.pos.y + block.size.y / 2);
                 if (blockRect.overlaps(ballRect)) {
-                    hitBlock = go;
-                    if (go.type == BlockType.UNBREAKABLE || go.type == BlockType.DOUBLE) {
+                    hitBlock = block;
+                    Game.getInstance().levels.get(Game.getInstance().currentLevel).hit(hitBlock);
+                    if (fireball && block.type != BlockType.UNBREAKABLE) {
+                        // Don't reflect the ball if it's a fireball
+                        continue;
+                    }
+                    if (block.type == BlockType.UNBREAKABLE || block.type == BlockType.DOUBLE) {
                         blockSound.stop();
                         unbreakableBlockSound.stop();
                         unbreakableBlockSound.play();
@@ -98,17 +123,18 @@ public class Ball extends GameObject {
                         blockSound.stop();
                         blockSound.play();
                     }
-                    float dist = (float) Math.sqrt((center.x - goCenter.x) * (center.x - goCenter.x) + (center.y - goCenter.y) * (center.y - goCenter.y));
                     if (center.x > blockRect.x && center.x < blockRect.x + blockRect.width) {
                         // Top or bottom
                         if (center.y < blockRect.y) {
                             // Bottom
                             vel.y *= -1;
                             pos.y = blockRect.y - size.y;
+                            return;
                         } else if (center.y > blockRect.y + blockRect.height) {
                             // Top
                             vel.y *= -1;
                             pos.y = blockRect.y + blockRect.height;
+                            return;
                         }
                     } else if (center.y > blockRect.y && center.y < blockRect.y + blockRect.height) {
                         // Left or right
@@ -116,10 +142,12 @@ public class Ball extends GameObject {
                             // Left
                             vel.x *= -1;
                             pos.x = blockRect.x - size.x;
+                            return;
                         } else if (center.x > blockRect.x + blockRect.width) {
                             // Right
                             vel.x *= -1;
                             pos.x = blockRect.x + blockRect.width;
+                            return;
                         }
                     } else {
                         // Corners
@@ -137,14 +165,12 @@ public class Ball extends GameObject {
                     }
                 }
             }
-            if (hitBlock != null && hitBlock.type != BlockType.INVISIBLE && hitBlock.type != BlockType.UNBREAKABLE) {
-                Game.getInstance().levels[Game.getInstance().currentLevel].hit(hitBlock);
-            }
+
 
             Paddle paddle = Game.getInstance().paddle;
             Rectangle paddleRect = new Rectangle(paddle.pos.x, paddle.pos.y + paddle.size.y - 4, paddle.size.x, 4);
-            float MAX_VERTICAL_VEL = Game.getInstance().levels[Game.getInstance().currentLevel].MAX_VERTICAL_VEL;
-            float MAX_HORIZONTAL_VEL = Game.getInstance().levels[Game.getInstance().currentLevel].MAX_HORIZONTAL_VEL;
+            float MAX_VERTICAL_VEL = Game.getInstance().levels.get(Game.getInstance().currentLevel).MAX_VERTICAL_VEL;
+            float MAX_HORIZONTAL_VEL = Game.getInstance().levels.get(Game.getInstance().currentLevel).MAX_HORIZONTAL_VEL;
             if (paddleRect.overlaps(ballRect)) {
                 float percentage = Math.abs(pos.x - paddle.pos.x) / paddle.size.x;
                 vel.x = Util.map(percentage, 0f, 1f, -MAX_HORIZONTAL_VEL, MAX_HORIZONTAL_VEL);
@@ -163,6 +189,20 @@ public class Ball extends GameObject {
             this.pos.x += this.vel.x * dt;
             this.pos.y += this.vel.y * dt;
         }
+    }
+
+    @Override
+    public void render(SpriteBatch sb) {
+        // Set color to red if it's fireball, to green if it's slow
+        if (fireball) {
+            sb.setColor(1, 0, 0, 1f);
+        }
+        if (softball) {
+            sb.setColor(0, 1, 0, 1f);
+        }
+        sb.draw(img, pos.x, pos.y, size.x, size.y);
+        // Reset the color so that other objects get rendered correctly
+        sb.setColor(1, 1, 1, 1.0f);
     }
 
     @Override

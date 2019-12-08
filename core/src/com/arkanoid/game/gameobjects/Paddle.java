@@ -18,6 +18,7 @@ public class Paddle extends GameObject {
 
     public int lives = 3;
     public int score = 0;
+    public int currentSize = 0;
 
     public Paddle() {
         img = img_normal;
@@ -30,16 +31,30 @@ public class Paddle extends GameObject {
         this.pos.x = (Arkanoid.WIDTH - size.x) / 2.0f;
         this.vel.x = 0.0f;
         this.vel.y = 0.0f;
+        setSize(0);
     }
 
-    public void enlarge() {
-        img = img_large;
-        this.size = new Vector2(48f, HEIGHT);
+    private void setSize(int size) {
+        if (size < 0) {
+            img = img_small;
+            this.size = new Vector2(24f, HEIGHT);
+            size = -1;
+        } else if (size == 0) {
+            img = img_normal;
+            this.size = new Vector2(32f, HEIGHT);
+        } else {
+            img = img_large;
+            this.size = new Vector2(48f, HEIGHT);
+            size = 1;
+        }
     }
 
     public void shrink() {
-        img = img_small;
-        this.size = new Vector2(24f, HEIGHT);
+        setSize(currentSize - 1);
+    }
+
+    public void enlarge() {
+        setSize(currentSize + 1);
     }
 
     @Override
