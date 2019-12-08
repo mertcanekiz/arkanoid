@@ -7,11 +7,15 @@ public abstract class GameState {
     public static final int MENU = 0;
     public static final int GAME = 1;
     public static final int HIGHSCORES = 2;
-    public static final int OPTIONS = 4;
+    public static final int HELP = 3;
+    public static final int ABOUT = 4;
+    public static final int OPTIONS = 5;
 
     private static GameState menu;
     private static GameState game;
     private static GameState highScores;
+//    private static GameState help;
+    private static GameState about;
     private static GameState options;
     public static GameState currentState;
 
@@ -33,6 +37,12 @@ public abstract class GameState {
                     highScores = new HighScores();
                 }
                 currentState = highScores;
+                break;
+            case ABOUT:
+                if (about == null) {
+                    about = new About();
+                }
+                currentState = about;
                 break;
             case OPTIONS:
                 if (options == null) {

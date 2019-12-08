@@ -45,6 +45,14 @@ public class Arkanoid extends Game {
 		charHeight = font.getData().getGlyph('M').height * font.getScaleY();
 	}
 
+	public static float calculateStringWidth(String text) {
+		float result = 0.0f;
+		for (int i = 0; i < text.length(); i++) {
+			result += font.getData().getGlyph(text.charAt(i)).width * font.getScaleX();
+		}
+		return result;
+	}
+
 	@Override
 	public void render () {
 		GameState.currentState.update(Gdx.graphics.getDeltaTime());

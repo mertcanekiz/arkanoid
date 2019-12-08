@@ -4,59 +4,99 @@ import com.arkanoid.game.Arkanoid;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
+import java.util.AbstractMap.SimpleEntry;
 
 public class Options extends GameState {
 
-    public static boolean soundEnabled = true;
+    public static boolean soundEnabled = false;
+    public static String difficulty = "Novice";
 
-    private static Map<String,String> options = new HashMap<>();
+    public static String[] options = new String[]{
+            "Difficulty",
+            "Sound",
+    };
+
+    public static String[] difficulties = new String[]{
+            "Novice",
+            "Intermediate",
+            "Advanced"
+    };
+
+    private int selectIndex = 0;
+    private int difficultyIndex = 0;
 
     public Options() {
         FileHandle handle = Gdx.files.internal("options.txt");
         String mapFile = handle.readString();
         String[] lines = mapFile.split("\\r?\\n|\\r");
-        for (int i = 0; i < lines.length; i++) {
-            String[] tokens = lines[i].split("=");
-            options.put(tokens[0], tokens[1]);
+        difficulty = lines[0].split("=")[1];
+        switch (difficulty) {
+            case "Novice":
+                difficultyIndex = 0;
+                break;
+            case "Intermediate":
+                difficultyIndex = 1;
+                break;
+            case "Advanced":
+                difficultyIndex = 2;
+                break;
         }
-        for (Map.Entry<String, String> option : options.entrySet()) {
-            switch (option.getKey()) {
-                case "sound":
-                    soundEnabled = option.getValue().equals("true");
-                    break;
-            }
-        }
+        soundEnabled = lines[1].split("=")[1].equals("true");
     }
 
     public static void save() {
         FileHandle handle = Gdx.files.local("options.txt");
         handle.delete();
-        options.forEach((option, value) -> {
-            handle.writeString(option + "=" + value + "\n", true);
-        });
+        handle.writeString("Difficulty=" + difficulty + "\n", true);
+        handle.writeString("Sound=" + String.valueOf(soundEnabled) + "\n", true);
     }
 
     @Override
     public void update(float dt) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             GameState.setState(GameState.MENU);
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
+            selectIndex++;
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
+            selectIndex--;
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+            switch (selectIndex) {
+                case 0:
+                    difficultyIndex++;
+                    if (difficultyIndex > 2) difficultyIndex = 0;
+                    difficulty = difficulties[difficultyIndex];
+                    break;
+                case 1:
+                    soundEnabled = !soundEnabled;
+                    break;
+            }
+            System.out.println(soundEnabled);
+            save();
         }
     }
 
     @Override
     public void render(SpriteBatch sb) {
         float y = Arkanoid.HEIGHT - 100;
-        int i = 0;
-        for (Map.Entry<String, String> entry : options.entrySet()) {
-            String option = entry.getKey();
-            boolean value = entry.getValue().equals("true");
 
-            Arkanoid.font.draw(sb, option, 10, y);
-            Arkanoid.font.draw(sb, value ? "Enabled" : "Disabled", 130, y);
+        for (int i = 0; i < options.length; i++) {
+            Arkanoid.font.setColor(Color.WHITE);
+            Arkanoid.font.draw(sb, options[i], 10, y);
+            if (selectIndex == i) {
+                Arkanoid.font.setColor(new Color(0xb53121ff));
+            } else {
+                Arkanoid.font.setColor(Color.WHITE);
+            }
+            String value = "";
+            if (i == 0) value = difficulty;
+            if (i == 1) value = String.valueOf(soundEnabled);
+            Arkanoid.font.draw(sb, value, 130, y);
             y -= Arkanoid.font.getLineHeight();
         }
     }

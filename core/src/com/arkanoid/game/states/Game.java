@@ -46,7 +46,6 @@ public class Game extends GameState {
         levels.add(new Level("levels/level-1.txt"));
         levels.add(new Level("levels/level-2.txt"));
         levels.add(new Level("levels/level-3.txt"));
-        powerups = new ArrayList<>();
         currentLevel = 1;
         paused = false;
     }
@@ -54,6 +53,7 @@ public class Game extends GameState {
     public void reset() {
         paddle.reset();
         ball.reset();
+        powerups = new ArrayList<>();
     }
 
     public void die() {

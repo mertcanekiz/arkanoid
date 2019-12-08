@@ -17,6 +17,8 @@ public abstract class PowerUp {
       "IncreaseBallSpeed",
       "Fireball",
       "Softball",
+      "ExtraLife",
+      "LoseLife"
     };
 
     protected Sprite img;
@@ -79,6 +81,10 @@ public abstract class PowerUp {
                 return new Fireball(pos);
             case "Softball":
                 return new Softball(pos);
+            case "ExtraLife":
+                return new ExtraLife(pos);
+            case "LoseLife":
+                return new LoseLife(pos);
         }
         return null;
     }

@@ -4,6 +4,7 @@ import com.arkanoid.game.Util;
 import com.arkanoid.game.gameobjects.Block.BlockType;
 import com.arkanoid.game.Arkanoid;
 import com.arkanoid.game.states.Game;
+import com.arkanoid.game.states.Options;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
@@ -39,6 +40,8 @@ public class Ball extends GameObject {
 
     public void reset() {
         attach(Game.getInstance().paddle);
+        setFireball(false);
+        setSoftball(false);
     }
 
     public void attach(Paddle paddle) {
@@ -114,14 +117,16 @@ public class Ball extends GameObject {
                         // Don't reflect the ball if it's a fireball
                         continue;
                     }
-                    if (block.type == BlockType.UNBREAKABLE || block.type == BlockType.DOUBLE) {
-                        blockSound.stop();
-                        unbreakableBlockSound.stop();
-                        unbreakableBlockSound.play();
-                    } else {
-                        unbreakableBlockSound.stop();
-                        blockSound.stop();
-                        blockSound.play();
+                    if (Options.soundEnabled) {
+                        if (block.type == BlockType.UNBREAKABLE || block.type == BlockType.DOUBLE) {
+                            blockSound.stop();
+                            unbreakableBlockSound.stop();
+                            unbreakableBlockSound.play();
+                        } else {
+                            unbreakableBlockSound.stop();
+                            blockSound.stop();
+                            blockSound.play();
+                        }
                     }
                     if (center.x > blockRect.x && center.x < blockRect.x + blockRect.width) {
                         // Top or bottom
@@ -184,7 +189,9 @@ public class Ball extends GameObject {
                     vel.y = -MAX_VERTICAL_VEL;
                 }
                 pos.y = paddle.pos.y + paddle.size.y + 1;
-                paddleSound.play();
+                if (Options.soundEnabled) {
+                    paddleSound.play();
+                }
             }
             this.pos.x += this.vel.x * dt;
             this.pos.y += this.vel.y * dt;

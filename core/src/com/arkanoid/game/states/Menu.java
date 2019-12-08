@@ -37,6 +37,9 @@ public class Menu extends GameState {
                 case 2:
                     GameState.setState(GameState.HIGHSCORES);
                     break;
+                case 4:
+                    GameState.setState(GameState.ABOUT);
+                    break;
                 case 5:
                     Gdx.app.exit();
                     break;
@@ -55,7 +58,7 @@ public class Menu extends GameState {
                 Arkanoid.font.setColor(Color.WHITE);
             }
             String buttonText = buttons[i];
-            Arkanoid.font.draw(sb, buttonText, (Arkanoid.SCREEN_WIDTH - buttonText.length() * Arkanoid.charWidth) / 2f, Arkanoid.SCREEN_HEIGHT / 2f - i * Arkanoid.charHeight * 1.4f);
+            Arkanoid.font.draw(sb, buttonText, (Arkanoid.SCREEN_WIDTH - Arkanoid.calculateStringWidth(buttonText)) / 2f, Arkanoid.SCREEN_HEIGHT / 2f - i * Arkanoid.charHeight * 1.4f);
         }
     }
 

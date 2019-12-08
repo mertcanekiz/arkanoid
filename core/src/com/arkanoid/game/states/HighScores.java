@@ -7,6 +7,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.AbstractMap.SimpleEntry;
@@ -32,7 +33,7 @@ public class HighScores extends GameState implements Input.TextInputListener {
 
     private void sort() {
         List<Entry<String, Integer>> list = new ArrayList<>(highScores.entrySet());
-        list.sort(Entry.comparingByValue());
+        list.sort((a, b) -> -(a.getValue()).compareTo(b.getValue()));
         highScores = new LinkedHashMap<>();
         for (Entry<String, Integer> entry : list) {
             highScores.put(entry.getKey(), entry.getValue());

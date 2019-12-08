@@ -1,6 +1,7 @@
 package com.arkanoid.game.powerups;
 
 import com.arkanoid.game.states.Game;
+import com.arkanoid.game.states.Options;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,7 +18,9 @@ public class IncreasePaddleLength extends InstantPowerUp {
     public void apply() {
         super.apply();
         Game.getInstance().paddle.enlarge();
-        sound.play();
+        if (Options.soundEnabled) {
+            sound.play();
+        }
     }
     public void dispose() {
         super.dispose();

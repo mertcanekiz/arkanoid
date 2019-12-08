@@ -1,1 +1,2 @@
-sound=true
+Difficulty=Advanced
+Sound=false
